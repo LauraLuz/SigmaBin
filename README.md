@@ -1,6 +1,6 @@
 # SigmaBin
 
-### 💫Integrantes
+### 💫Integrantes do grupo SIGMA
 
 - RM: 84372 - Paulo Fernando Moncaio Avelar Muniz (2TDSG)
 - RM: 85708 - Diogo Amaral (2TDSG)
