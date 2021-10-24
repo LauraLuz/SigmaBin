@@ -1,26 +1,27 @@
-pipeline{
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Deliver') { 
-            steps {
-                sh './jenkins/scripts/deliver.sh' 
-            }
-        }
+pipeline {
+  agent {
+    dockerfile {
+      filename 'docker/Dockerfile'
     }
+  }
+  stages {
+    stage('compile') {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
+    stage('archive') {
+      steps {
+        parallel(
+          "Junit": {
+            junit 'target/surefire-reports/*.xml'
+          },
+          "Archive": {
+            archiveArtifacts(artifacts: 'target/Nadia.jar', onlyIfSuccessful: true, fingerprint: true)
+            archiveArtifacts(artifacts: 'target/Nadia*javadoc.jar', fingerprint: true)
+          }
+        )
+      }
+    }
+  }
 }
-    
