@@ -1,11 +1,15 @@
+//Inicio Pipeline Declarativa
 pipeline {
+  //Utilizar ambiente disponivel
   agent any 
   stages {
+    //Etapa de compliar codigo X
     stage('compile') {
       steps {
         bash 'mvn clean install'
       }
     }
+    //Etapa de compliar codigo X
     stage('archive') {
       steps {
         parallel(
